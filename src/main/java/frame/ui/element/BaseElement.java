@@ -5,13 +5,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.thoughtworks.selenium.ScreenshotListener;
+
 public class BaseElement {
 
-	protected RemoteWebDriver rw;
+	protected WebDriver rw;
 	protected Actions action;
 	protected JavascriptExecutor javascriptExeccutor;
 	protected int elementTimeout = 30;
-	public BaseElement(RemoteWebDriver rw) {
+	public BaseElement(WebDriver rw) {
 		super();
 		this.rw = rw;
 		this.action = new Actions(this.rw);

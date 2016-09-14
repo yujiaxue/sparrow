@@ -3,12 +3,12 @@ package frame.ui.element;
 import java.util.Set;
 
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 
 public class CookieOperation extends BaseElement{
 
-	public CookieOperation(RemoteWebDriver rw) {
+	public CookieOperation(WebDriver rw) {
 		super(rw);
 	}
 	/**

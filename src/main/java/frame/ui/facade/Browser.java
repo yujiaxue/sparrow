@@ -2,11 +2,8 @@ package frame.ui.facade;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.google.common.base.Function;
 
 import frame.ui.assertion.Assertion;
 import frame.ui.element.BaseElement;
@@ -26,7 +23,7 @@ public class Browser extends BaseElement{
 	protected Clicker clicker;
 	protected FindElement findElement;
 	
-	public Browser(RemoteWebDriver rw) {
+	public Browser(WebDriver rw) {
 		super(rw);
 		this.uiwindow = new UIWindow(rw);
 		this.switchwindow = new SwitchWindow(rw);

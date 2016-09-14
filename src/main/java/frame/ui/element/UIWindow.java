@@ -1,5 +1,6 @@
 package frame.ui.element;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -11,7 +12,7 @@ public class UIWindow extends BaseElement {
 
 	Logger logger = LogManager.getLogger(UIWindow.class);
 
-	public UIWindow(RemoteWebDriver rw) {
+	public UIWindow(WebDriver rw) {
 		super(rw);
 	}
 

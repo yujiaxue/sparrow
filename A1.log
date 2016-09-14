@@ -1,0 +1,9 @@
+2016-09-13 17:57:28.211 [main] INFO  org.framework.Listener.TestListener - onTestStart----com.iwjw.uicase.RentHouse----search2----这是我的一个中文case名称
+2016-09-13 17:57:28.214 [main] INFO  org.framework.Listener.TestListener - onTestEnd----com.iwjw.uicase.RentHouse----search2----这是我的一个中文case名称----success----0.0----秒钟
+2016-09-13 17:57:28.218 [main] INFO  org.framework.Listener.TestListener - onTestStart----com.iwjw.uicase.RentHouse----search2----这是我的一个中文case名称
+2016-09-13 17:57:28.220 [main] INFO  org.framework.Listener.TestListener - onTestEnd----com.iwjw.uicase.RentHouse----search2----这是我的一个中文case名称----success----0.0----秒钟
+2016-09-13 17:57:28.222 [main] INFO  org.framework.Listener.TestListener - onTestStart----com.iwjw.uicase.RentHouse----search2----这是我的一个中文case名称
+2016-09-13 17:57:28.224 [main] INFO  org.framework.Listener.TestListener - onTestEnd----com.iwjw.uicase.RentHouse----search2----这是我的一个中文case名称----success----0.0----秒钟
+2016-09-13 17:57:28.290 [main] INFO  frame.ui.element.UIWindow - 关闭浏览器
+2016-09-13 17:57:28.312 [main] INFO  frame.ui.element.UIWindow - 退出WebDriver实例
+2016-09-13 17:57:28.324 [main] INFO  org.framework.Listener.TestListener - onFinish----0----分钟

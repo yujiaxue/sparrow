@@ -14,7 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.madgag.gif.fmsware.AnimatedGifEncoder;
+//import com.madgag.gif.fmsware.AnimatedGifEncoder;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -62,15 +62,15 @@ public class test1 {
 		FileUtils.copyFile(image, new File("3.png"));
         BufferedImage src3 = ImageIO.read(new File("3.png"));
         
-        AnimatedGifEncoder e = new AnimatedGifEncoder(); 
-        e.setRepeat(0); 
-        e.start("baidu.gif"); 
-        e.setDelay(300); // 1 frame per sec 
-        e.addFrame(src1); 
-        e.setDelay(100); 
-        e.addFrame(src2); 
-        e.setDelay(100); 
-      e.addFrame(src3); 
-        e.finish();
+        //AnimatedGifEncoder e = new AnimatedGifEncoder(); 
+//        e.setRepeat(0); 
+//        e.start("baidu.gif"); 
+//        e.setDelay(300); // 1 frame per sec 
+//        e.addFrame(src1); 
+//        e.setDelay(100); 
+//        e.addFrame(src2); 
+//        e.setDelay(100); 
+//      e.addFrame(src3); 
+//        e.finish();
 	}
 }

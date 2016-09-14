@@ -2,18 +2,25 @@ package frame.ui.facade;
 
 import java.util.HashMap;
 
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import frame.tools.file.IniFile;
+import frame.ui.driver.IDriver;
+import frame.ui.driver.LocalChromeDriver;
 import frame.ui.driver.RemoteChromeDriver;
 
 public class BrowserFactory {
 
-	private static RemoteWebDriver driver;
+	private static WebDriver driver;
 	
 	public static synchronized Browser getBrowser(){
 		HashMap<String,String> config = new IniFile().getConfig();
-		RemoteChromeDriver rcd = new RemoteChromeDriver();
+		IDriver rcd = null;
+		if(config.get("remote").equals("true")){
+			rcd  = new RemoteChromeDriver();
+		}else if(config.get("browser").equalsIgnoreCase("chrome")){
+			rcd = new LocalChromeDriver(); 
+		}
 		if(driver == null){
 			 driver = rcd.genDriver(config);
 		}

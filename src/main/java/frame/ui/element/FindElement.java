@@ -16,7 +16,7 @@ import frame.ui.assertion.Assertion;
 public class FindElement extends BaseElement {
 	Logger logger = Logger.getLogger(FindElement.class);
 
-	public FindElement(RemoteWebDriver rw) {
+	public FindElement(WebDriver rw) {
 		super(rw);
 	}
 	public WebElement searchByImplicity(String xpath){

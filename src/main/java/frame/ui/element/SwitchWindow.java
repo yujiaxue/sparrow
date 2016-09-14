@@ -1,5 +1,6 @@
 package frame.ui.element;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import junit.framework.Assert;
@@ -11,7 +12,7 @@ public class SwitchWindow extends BaseElement{
 
 	Logger logger = LogManager.getLogger(SwitchWindow.class);
 	
-	public SwitchWindow(RemoteWebDriver rw) {
+	public SwitchWindow(WebDriver rw) {
 		super(rw);
 	}
 	/**
