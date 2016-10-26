@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<autotest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+	<testSuites>
+		<test name="租房在地图页筛选房源"  description="">
+			<step name="check" description="" type="xpath" locator="//div[@class='dialog-content']/ul/li"  action="true" then="click" />
+			<step name="click" type="xpath" locator="//div[@class='dialog-content']/ul/li" />
+			<step name="click" type="xpath" locator="//a[text()='租房']" />
+			<step name="switchWindow" number="2" />
+			<step name="sendKeys" type="xpath" locator="//input[@name='kw']" value="南翔" />
+<!-- 			<assertContains locator="" expected="" /> -->
+<!-- 			<step name="click" type="class" locator="form-btn" /> -->
+<!-- 			<step name="getElementCount" locator="" /> -->
+<!-- 			<step name="getRandomInt" max="" /> -->
+<!-- 			<step name="moveToElement" locator="" /> -->
+<!-- 			<step name="getText" locator="" /> -->
+<!-- 			<step name="assertNotEquals" actual="" expected="" /> -->
+<!-- 			<step name="assertBetween" actual="" min="" max="" /> -->
+		</test>
+		<test name="" description="">
+		</test>
+		<test name="" description="">
+		</test>
+	</testSuites>
+</autotest>

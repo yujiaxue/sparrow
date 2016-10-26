@@ -1,9 +1,6 @@
 package frame.test;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import frame.tools.file.IniFile;
+import frame.tools.file.XmlFile;
 
 public class test {
 
@@ -39,10 +36,13 @@ public class test {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		IniFile ini = new IniFile();
-		HashMap<String,String> p = ini.getConfig();
-		for(String key : p.keySet()){
-			System.out.println(p.get(key));
-		}
+		
+		XmlFile xf = new XmlFile("TestCases.xml");
+		xf.parseTestXml();
+//		IniFile ini = new IniFile();
+//		HashMap<String,String> p = ini.getConfig();
+//		for(String key : p.keySet()){
+//			System.out.println(p.get(key));
+//		}
 	}
 }
