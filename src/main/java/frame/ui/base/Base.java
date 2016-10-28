@@ -14,7 +14,6 @@ public class Base {
 		Method[] m1 = browser.getClass().getDeclaredMethods();
 		for (Method m : m1) {
 			// if(m.equals("sendKeys")){
-			System.out.println(m.getName());
 			mm = m;
 			String mname = mm.getName();
 			// Class[] cl = m.getParameterTypes();

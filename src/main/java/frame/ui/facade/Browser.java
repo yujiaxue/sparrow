@@ -382,16 +382,17 @@ public class Browser extends BaseElement {
 	// return Selector.selectReturn(selectLocator);
 	// }
 	//
-	// /**
-	// * 通过对象的equals方式判断两个变量内容是否相等
-	// * @param expected 预期的值
-	// * @param actual 实际的值
-	//
-	// */
-	// public void assertEquals(String expected, String actual) {
-	// Assertion.assertEquals(expected, actual);
-	// }
-	//
+	 /**
+	 * 通过对象的equals方式判断两个变量内容是否相等
+	 * @param expected 预期的值
+	 * @param actual 实际的值
+	
+	 */
+	 public void assertEqualString(String locator, String expected) {
+		 String actual = findElement.searchUntilPresent(locator, elementTimeout).getText().trim();
+		 Assertion.assertEquals(actual, expected);
+	 }
+	
 	/**
 	 * /** 通过对象的equals方式判断两个变量内容是否相等,通过attr确定获取元素的哪个属性值,value,text
 	 * 
@@ -419,7 +420,7 @@ public class Browser extends BaseElement {
 	 * @param actual
 	 *            实际的值
 	 */
-	public void assertEquals(int expected, int actual) {
+	public void assertEqualsInt(int expected, int actual) {
 		Assertion.assertEquals(expected, actual);
 	}
 

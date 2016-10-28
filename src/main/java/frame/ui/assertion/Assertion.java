@@ -30,14 +30,14 @@ public class Assertion {
 		if(actual.equals(expect)){
 			logger.info(actual + " 等于 " + expect + " success");
 		}else{
-			error(actual + " 不等于 " + expect + " success");
+			error(actual + " 不等于 " + expect + " fail");
 		}
 	}
 	public static void assertEquals(int actual,int expect){
 		if(actual == expect){
 			logger.info(actual + " 等于 " + expect + " success");
 		}else{
-			error(actual + " 不等于 " + expect + " success");
+			error(actual + " 不等于 " + expect + " fail");
 		}
 	}
 }
