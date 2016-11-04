@@ -7,10 +7,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class LocalChromeDriver implements IDriver{
+public class LocalChromeDriver implements IDriver {
 
 	public WebDriver genDriver(HashMap<String, String> config) {
-		System.setProperty("webdriver.chrome.driver", "tools/chromedriver");
+		System.setProperty("webdriver.chrome.driver", config.get("driverpath"));
+		// System.setProperty("webdriver.chrome.driver", "tools/chromedriver");
 		ChromeOptions chromeOptions = new ChromeOptions();
 		DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 		desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);

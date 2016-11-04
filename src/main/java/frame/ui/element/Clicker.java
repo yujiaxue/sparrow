@@ -2,6 +2,7 @@ package frame.ui.element;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.framework.jdbc.TcSql;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,8 +32,10 @@ public class Clicker extends BaseElement{
 		if(clickable(xpath)){
 			button.click();
 			logger.info("点击元素 locator="+xpath+"成功");
+			TcSql.updateDone("done", "点击元素 locator="+xpath+"成功");
 		}else{
 			logger.error("点击元素 locator="+xpath+"发生异常");
+			TcSql.updateDone("fail", "点击元素 locator="+xpath+"发生异常");
 		}
 	}
 	public void clickByText(String text){

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,11 +12,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+
+import sun.net.www.http.HttpClient;
 
 public class XmlDataDriven implements Iterator<Object[]> {
 
@@ -35,8 +45,16 @@ public class XmlDataDriven implements Iterator<Object[]> {
 		xml = new StringBuilder(dataroot).append(o.getClass().getName().replaceAll("\\.", File.separator))
 				.append(".xml").toString();
 		readFile(xml);
-		Document document = null;
+		generate();
+	}
 
+	public XmlDataDriven(String url) {
+		readUrl(url);
+		generate();
+	}
+
+	public void generate() {
+		Document document = null;
 		try {
 			document = DocumentHelper.parseText(sb.toString());
 
@@ -45,8 +63,38 @@ public class XmlDataDriven implements Iterator<Object[]> {
 		}
 		root = document.getRootElement();
 
-		//caseCount = root.element("testSuites").elements("test").size();
+		// caseCount = root.element("testSuites").elements("test").size();
 		caseCount = root.elements("test").size();
+	}
+
+	public void readUrl(String url) {
+		CloseableHttpClient httpclient = null;
+		httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(String.format(url));
+		// System.out.println("executing request" + httpget.getRequestLine());
+		try {
+			CloseableHttpResponse response = httpclient.execute(httpget);
+			try {
+				HttpEntity entity = response.getEntity();
+				// System.out.println("----------------------------------------");
+				// System.out.println(response.getStatusLine());
+				if (entity != null) {
+					// System.out.println("Response content length: " +
+					// entity.getContentLength());
+					System.out.println(EntityUtils.toString(entity));
+					// EntityUtils.consume(entity);
+					sb = new StringBuffer(EntityUtils.toString(entity));
+				}
+			} finally {
+				response.close();
+			}
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public StringBuffer readFile(String file) {
@@ -89,28 +137,28 @@ public class XmlDataDriven implements Iterator<Object[]> {
 
 	@Override
 	public Object[] next() {
-		ArrayList<Map<String, String>> onecase = new ArrayList<Map<String,String>>();
-		
+		ArrayList<Map<String, String>> onecase = new ArrayList<Map<String, String>>();
+
 		Element ele = root.elements("test").get(loopindex);
-		
+
 		Iterator<Element> child = ele.elementIterator();
-		int i =0;
-		while(child.hasNext())
-		{
-			Map<String,String> steps = new HashMap<String,String>();
+		int i = 0;
+		while (child.hasNext()) {
+			Map<String, String> steps = new HashMap<String, String>();
 			Element t = child.next();
 			steps.put("caseName", ele.attributeValue("name"));
-			if("step".equals(t.getName())){
+			steps.put("caseid", ele.attributeValue("caseid"));
+			if ("step".equals(t.getName())) {
 				List<Attribute> attrs = t.attributes();
-				for(Attribute attr : attrs){
+				for (Attribute attr : attrs) {
 					steps.put(attr.getName(), attr.getValue());
 				}
 			}
 			onecase.add(i, steps);
 			i++;
 		}
-		
-		Object[] o  = new Object[1];
+
+		Object[] o = new Object[1];
 		o[0] = onecase;
 		loopindex++;
 		return o;

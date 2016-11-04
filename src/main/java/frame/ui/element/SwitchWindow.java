@@ -3,6 +3,7 @@ package frame.ui.element;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import frame.ui.assertion.Assertion;
 import junit.framework.Assert;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,7 @@ public class SwitchWindow extends BaseElement{
 			int count = rw.getWindowHandles().size();
 			if(number > count){
 				logger.error("没有该window");
-				Assert.fail("没有该window");
+				Assertion.error("没有该window");
 			}else{
 				rw.switchTo().window(rw.getWindowHandles().toArray()[number-1].toString());
 				break;

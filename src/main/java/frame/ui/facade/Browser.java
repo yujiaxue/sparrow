@@ -2,6 +2,7 @@ package frame.ui.facade;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.framework.jdbc.TcSql;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -51,6 +52,7 @@ public class Browser extends BaseElement {
 		uiwindow.get(url);
 		uiwindow.setCookie("iw_user_province_cookie", "2");
 		uiwindow.refresh();
+		TcSql.updateDone("done","打开网址"+url);
 	}
 
 	/**
@@ -58,6 +60,7 @@ public class Browser extends BaseElement {
 	 */
 	public void quit() {
 		uiwindow.quit();
+
 	}
 
 	/**
@@ -65,6 +68,7 @@ public class Browser extends BaseElement {
 	 */
 	public void refresh() {
 		uiwindow.refresh();
+		TcSql.updateDone("done","刷新页面");
 	}
 
 	/**
@@ -91,9 +95,11 @@ public class Browser extends BaseElement {
 		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
 		if (ele == null) {
 			Assertion.info("没有找到元素 locator=" + locator);
+			TcSql.updateDone("done", "没有找到元素 locator=" + locator);
 			return false;
 		} else {
 			Assertion.info("找到元素 locator=" + locator);
+			TcSql.updateDone("done", "找到元素 locator=" + locator);
 			return true;
 		}
 	}
@@ -107,6 +113,7 @@ public class Browser extends BaseElement {
 	 */
 	public void switchWindowInt(int number) {
 		switchwindow.switchWindow(number);
+		TcSql.updateDone("done", "切换tab窗口至" + number);
 	}
 
 	/**
@@ -120,6 +127,7 @@ public class Browser extends BaseElement {
 
 	public void switchWindowString(String windowHandle) {
 		switchwindow.switchWindow(windowHandle);
+		TcSql.updateDone("done", "切换tab窗口至" + windowHandle);
 	}
 
 	/**
@@ -134,6 +142,7 @@ public class Browser extends BaseElement {
 	 */
 	public void goBack() {
 		uiwindow.back();
+		TcSql.updateDone("done", "浏览器后退");
 	}
 
 	/**
@@ -153,14 +162,14 @@ public class Browser extends BaseElement {
 		clicker.clickByLocator(locator);
 	}
 
-//	/***
-//	 * 点击给定的目标element控件元素
-//	 * 
-//	 * @param element
-//	 */
-//	public void click(WebElement element) {
-//		element.click();
-//	}
+	// /***
+	// * 点击给定的目标element控件元素
+	// *
+	// * @param element
+	// */
+	// public void click(WebElement element) {
+	// element.click();
+	// }
 
 	/***
 	 * 检查给定的目标元素是否显示在页面上，返回真点击元素
@@ -251,9 +260,12 @@ public class Browser extends BaseElement {
 		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
 		if (null == ele) {
 			Assertion.error("没有找到元素locator=" + locator);
+			TcSql.updateDone("fail", "没有找到元素locator=" + locator);
+		} else {
+			ele.sendKeys(value);
+			Assertion.info("输入" + value + "至localtor=" + locator + "成功");
+			TcSql.updateDone("done", "输入" + value + "至localtor=" + locator + "成功");
 		}
-		ele.sendKeys(value);
-		Assertion.info("输入" + value + "至localtor=" + locator + "成功");
 	}
 
 	//
@@ -278,6 +290,7 @@ public class Browser extends BaseElement {
 	public String getText(String locator) {
 		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
 		String text = we.getText().trim();
+		TcSql.updateDone("done", "获取元素文本"+text);
 		return text;
 	}
 
@@ -382,17 +395,20 @@ public class Browser extends BaseElement {
 	// return Selector.selectReturn(selectLocator);
 	// }
 	//
-	 /**
+	/**
 	 * 通过对象的equals方式判断两个变量内容是否相等
-	 * @param expected 预期的值
-	 * @param actual 实际的值
-	
+	 * 
+	 * @param expected
+	 *            预期的值
+	 * @param actual
+	 *            实际的值
+	 * 
 	 */
-	 public void assertEqualString(String locator, String expected) {
-		 String actual = findElement.searchUntilPresent(locator, elementTimeout).getText().trim();
-		 Assertion.assertEquals(actual, expected);
-	 }
-	
+	public void assertEqualString(String locator, String expected) {
+		String actual = findElement.searchUntilPresent(locator, elementTimeout).getText().trim();
+		Assertion.assertEquals(actual, expected);
+	}
+
 	/**
 	 * /** 通过对象的equals方式判断两个变量内容是否相等,通过attr确定获取元素的哪个属性值,value,text
 	 * 
@@ -409,7 +425,7 @@ public class Browser extends BaseElement {
 		} else if ("value".equals(attr)) {
 			actual = we.getAttribute("value").trim();
 		}
-		 Assertion.assertEquals(actual, expected);
+		Assertion.assertEquals(actual, expected);
 	}
 
 	/**
