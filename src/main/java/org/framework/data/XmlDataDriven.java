@@ -71,28 +71,26 @@ public class XmlDataDriven implements Iterator<Object[]> {
 		CloseableHttpClient httpclient = null;
 		httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(String.format(url));
+		CloseableHttpResponse response = null;
 		// System.out.println("executing request" + httpget.getRequestLine());
 		try {
-			CloseableHttpResponse response = httpclient.execute(httpget);
-			try {
-				HttpEntity entity = response.getEntity();
-				// System.out.println("----------------------------------------");
-				// System.out.println(response.getStatusLine());
-				if (entity != null) {
-					// System.out.println("Response content length: " +
-					// entity.getContentLength());
-					System.out.println(EntityUtils.toString(entity));
-					// EntityUtils.consume(entity);
-					sb = new StringBuffer(EntityUtils.toString(entity));
-				}
-			} finally {
-				response.close();
+			response = httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				//System.out.println(EntityUtils.toString(entity));
+				// EntityUtils.consume(entity);
+				sb.append(EntityUtils.toString(entity));
 			}
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}  finally {
+			if (response != null) {
+				try {
+					response.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 	}

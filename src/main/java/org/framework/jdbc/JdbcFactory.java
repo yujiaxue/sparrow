@@ -60,7 +60,6 @@ public class JdbcFactory {
 			if (stmt != null) {
 				try {
 					stmt.close();
-					conn.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -81,7 +80,6 @@ public class JdbcFactory {
 			if (stmt != null) {
 				try {
 					stmt.close();
-					conn.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
