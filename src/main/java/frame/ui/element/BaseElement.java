@@ -1,11 +1,10 @@
 package frame.ui.element;
 
+import java.util.Map;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
-import com.thoughtworks.selenium.ScreenshotListener;
 
 public class BaseElement {
 
@@ -13,6 +12,8 @@ public class BaseElement {
 	protected Actions action;
 	protected JavascriptExecutor javascriptExeccutor;
 	protected int elementTimeout = 30;
+	protected Map<String,String> config;
+	
 	public BaseElement(WebDriver rw) {
 		super();
 		this.rw = rw;
@@ -24,10 +25,17 @@ public class BaseElement {
 	 * @param seconds
 	 * @return
 	 */
-	public int setElementTimeout(int seconds){
+	public void setElementTimeout(int seconds){
 		this.elementTimeout = seconds;
-		return this.elementTimeout;
 	}
 	
+
+	/**
+	 * 
+	 * @param config
+	 */
+	public void setConfig(Map<String, String> config) {
+		this.config = config;
+	}
 	
 }

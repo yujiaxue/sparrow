@@ -25,6 +25,8 @@ public class BrowserFactory {
 			 driver = rcd.genDriver(config);
 		}
 		//BaseElement be = new BaseElement(driver);
-		return new Browser(driver);
+		Browser browser = new Browser(driver);
+		browser.setConfig(config);
+		return browser;
 	}
 }

@@ -15,11 +15,17 @@ import org.testng.log4testng.Logger;
 import frame.tools.file.Constant;
 import frame.ui.assertion.Assertion;
 
+/**
+ * @author zhangfujun
+ *
+ */
+
 public class FindElement extends BaseElement {
 	Logger logger = Logger.getLogger(FindElement.class);
-
+	Assertion assertion;
 	public FindElement(WebDriver rw) {
 		super(rw);
+		assertion = new Assertion(rw);
 	}
 
 	public WebElement searchByImplicity(String xpath) {
@@ -27,9 +33,9 @@ public class FindElement extends BaseElement {
 		try {
 			ele = rw.findElement(By.xpath(xpath));
 		} catch (NoSuchElementException e) {
-			Assertion.error(e.getMessage());
+			assertion.error(e.getMessage());
 		} catch (TimeoutException e) {
-			Assertion.error(e.getMessage());
+			assertion.error(e.getMessage());
 		}
 		return ele;
 	}
@@ -46,6 +52,13 @@ public class FindElement extends BaseElement {
 		}
 		return l;
 	}
+	
+	/**
+	 * 查找给定定位器的元素列表
+	 * @param xpath
+	 * @param seconds
+	 * @return List<WebElement>
+	 */
 	public List<WebElement> searchsUntilPresent(String xpath,int seconds){
 		List<WebElement> ele = null;
 		By by = null;
@@ -64,6 +77,12 @@ public class FindElement extends BaseElement {
 		return ele;
 	}
 
+	/**
+	 * 返回给定定位器的元素
+	 * @param xpath
+	 * @param seconds
+	 * @return WebElement
+	 */
 	public WebElement searchUntilPresent(String xpath, int seconds) {
 		WebElement ele = null;
 		By by = null;
@@ -74,7 +93,6 @@ public class FindElement extends BaseElement {
 		}
 		
 		try {
-			//final String templ = xpath;
 			final By byt = by;
 			WebDriverWait wdw = new WebDriverWait(rw, seconds, Integer.parseInt(System.getProperty(Constant.POLLING)));
 			ele = wdw.until(new ExpectedCondition<WebElement>() {
@@ -84,12 +102,12 @@ public class FindElement extends BaseElement {
 			});
 			return ele;
 		} catch (TimeoutException te) {
-			Assertion.info("查找元素超时,阀值" + seconds + "秒");
+			assertion.info("查找元素超时,阀值" + seconds + "秒");
 			// logger.error("查找元素超时" + seconds + "秒");
 			// logger.error(te.getMessage());
 		} catch (NumberFormatException te) {
 			// logger.error(te.getMessage());
-			Assertion.error(te.getMessage());
+			assertion.error(te.getMessage());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.out.println(e.getClass() + "  " + e.getClass().toString());

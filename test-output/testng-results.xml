@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="3" passed="3">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="534" started-at="2016-11-23T06:04:11Z" finished-at="2016-11-23T06:04:11Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="534" started-at="2016-11-23T06:04:11Z" finished-at="2016-11-23T06:04:11Z">
+      <class name="org.frame.ui.sparrow.AppTest">
+        <test-method status="PASS" signature="test01(java.util.List)[pri:0, instance:org.frame.ui.sparrow.AppTest@3ffc5af1]" name="test01" duration-ms="12" started-at="2016-11-23T14:04:11Z" data-provider="xmldriven" finished-at="2016-11-23T14:04:11Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[{caseid=1, inputValue=http://pc.iwjwtest.com/, caseName=按行政区域名搜索租房房源, action=get, id=1, attr=, locator=}, {caseid=1, inputValue=浦东新区, caseName=按行政区域名搜索租房房源, action=sendKeys, id=2, attr=, locator=//input[@class='kw-input']}, {caseid=1, inputValue=, caseName=按行政区域名搜索租房房源, action=click, id=3, attr=, locator=//button[@class='btn-map']}, {caseid=1, inputValue=浦东新区, caseName=按行政区域名搜索租房房源, action=assertContain, id=4, attr=, locator=//h1[@class='list-attribution']/b}, {caseid=1, inputValue=浦东新区, caseName=按行政区域名搜索租房房源, action=assertAttrEquals, id=9, attr=value, locator=//input[@name='kw']}, {caseid=1, inputValue=浦东新区, caseName=按行政区域名搜索租房房源, action=assertEqualString, id=15, attr=, locator=//div[@class='mod-find-area_line active']/span}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test01 -->
+        <test-method status="PASS" signature="test01(java.util.List)[pri:0, instance:org.frame.ui.sparrow.AppTest@3ffc5af1]" name="test01" duration-ms="2" started-at="2016-11-23T14:04:11Z" data-provider="xmldriven" finished-at="2016-11-23T14:04:11Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[{caseid=2, inputValue=, caseName=按行政区域名搜索二手房房源, action=click, id=17, attr=, locator=//div[@class='banner-search']/ul/li[1]/span}, {caseid=2, inputValue=嘉定区, caseName=按行政区域名搜索二手房房源, action=sendKeys, id=19, attr=, locator=//input[@class='kw-input']}, {caseid=2, inputValue=, caseName=按行政区域名搜索二手房房源, action=click, id=20, attr=, locator=//button[@class='btn-map']}, {caseid=2, inputValue=嘉定区, caseName=按行政区域名搜索二手房房源, action=assertContain, id=21, attr=, locator=//h1[@class='list-attribution']/b}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test01 -->
+        <test-method status="PASS" signature="test01(java.util.List)[pri:0, instance:org.frame.ui.sparrow.AppTest@3ffc5af1]" name="test01" duration-ms="2" started-at="2016-11-23T14:04:11Z" data-provider="xmldriven" finished-at="2016-11-23T14:04:11Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[{caseid=7, inputValue=南翔, caseName=test search house, action=sendKeys, id=49, attr=, locator=//input[@class='kw-input']}, {caseid=7, inputValue=, caseName=test search house, action=click, id=50, attr=, locator=//h2[@class='list-summary']/b[1]}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test01 -->
+      </class> <!-- org.frame.ui.sparrow.AppTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

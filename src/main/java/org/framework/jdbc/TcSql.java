@@ -1,6 +1,13 @@
 package org.framework.jdbc;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import frame.ui.facade.Browser;
+
 public class TcSql {
+
+	private static final Logger logger = LogManager.getLogger(Browser.class);
 
 	/**
 	 * 更新执行记录
@@ -11,9 +18,13 @@ public class TcSql {
 	 * @param stepid
 	 */
 	public static void updateStatus(String status, int exeid, int caseid, int stepid, String log) {
-		JdbcFactory jf = JdbcFactory.getConn();
-		jf.update("update execution set status=?,log=? where executeid=? and caseid=? and stepid=?", status, log, exeid,
-				caseid,stepid);
+		try {
+			JdbcFactory jf = JdbcFactory.getConn();
+			jf.update("update execution set status=?,log=? where executeid=? and caseid=? and stepid=?", status, log,
+					exeid, caseid, stepid);
+		} catch (Exception e) {
+			logger.info("updateStatus .." + e.getMessage().toString());
+		}
 	}
 
 	/**
@@ -26,9 +37,25 @@ public class TcSql {
 		JdbcFactory jf = JdbcFactory.getConn();
 		jf.updateTask("update tasks set status=? where id=?", status, taskid);
 	}
+	public static void updateExcute(int exeid,int passnum,int failnum,int taskid,int excutetime,String status){
+		JdbcFactory jf = JdbcFactory.getConn();
+		jf.updateExcute("update excute set successcase=? ,failcase=?,excutetime=?,status=? where taskid=? and id=?", 
+				 passnum, failnum, excutetime,status,taskid,exeid);
+	}
 
-	public static void updateDone(String status,String log) {
+	public static void updateDone(String status, String log) {
 		updateStatus(status, Integer.parseInt(System.getProperty("executeid")),
 				Integer.parseInt(System.getProperty("caseid")), Integer.parseInt(System.getProperty("stepid")), log);
+	}
+
+	public static void updateImgFile(String file) {
+		try {
+			JdbcFactory jf = JdbcFactory.getConn();
+			jf.updateImg("update execution set imageurl=? where executeid=? and caseid=? and stepid=?", file,
+					Integer.parseInt(System.getProperty("executeid")), Integer.parseInt(System.getProperty("caseid")),
+					Integer.parseInt(System.getProperty("stepid")));
+		} catch (Exception e) {
+			logger.info("updateImgFile .." + e.getMessage().toString());
+		}
 	}
 }

@@ -1,48 +1,61 @@
 package frame.ui.facade;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.framework.jdbc.TcSql;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
+import org.openqa.selenium.support.Color;
+
+import com.iwjw.pageOperation.IwjwPageWrapper;
 
 import frame.ui.assertion.Assertion;
+import frame.ui.element.Alert;
 import frame.ui.element.Attr;
 import frame.ui.element.BaseElement;
 import frame.ui.element.Clicker;
 import frame.ui.element.FindElement;
+import frame.ui.element.Selector;
 import frame.ui.element.SwitchWindow;
 import frame.ui.element.UIWindow;
 
 /**
  * 浏览器操作类
  */
+/**
+ * @author zhangfujun
+ *
+ */
+
 public class Browser extends BaseElement {
 
 	private static final Logger logger = LogManager.getLogger(Browser.class);
-	protected UIWindow uiwindow;
-	protected SwitchWindow switchwindow;
-	protected Clicker clicker;
-	protected FindElement findElement;
-	protected Attr attr;
-
+	public UIWindow uiwindow;
+	public SwitchWindow switchwindow;
+	public Clicker clicker;
+	public FindElement findElement;
+	public Attr attr;
+	public IwjwPageWrapper ipw;
+	public Assertion assertion;
+	public Selector selector;
+	public Alert alert;
 	public Browser(WebDriver rw) {
 		super(rw);
+		super.setElementTimeout(Integer.parseInt(config.get("elementTimeout")));
 		this.uiwindow = new UIWindow(rw);
 		this.switchwindow = new SwitchWindow(rw);
 		this.clicker = new Clicker(rw);
 		this.findElement = new FindElement(rw);
 		this.attr = new Attr(rw);
+		this.ipw = new IwjwPageWrapper(rw);
+		this.assertion = new Assertion(rw);
+		this.selector = new Selector(rw);
+		this.alert = new Alert(rw);
 	}
 
-	// public WebElement wait(WebElement element){
-	// return browser.wait(element);
-	// }
-
-	// public void setSize (int height,int width){
-	// uiwindow.setSize(height,width);
-	// }
 	/**
 	 * 加载新的页面
 	 *
@@ -52,7 +65,7 @@ public class Browser extends BaseElement {
 		uiwindow.get(url);
 		uiwindow.setCookie("iw_user_province_cookie", "2");
 		uiwindow.refresh();
-		TcSql.updateDone("done","打开网址"+url);
+		TcSql.updateDone("done", "打开网址" + url);
 	}
 
 	/**
@@ -60,7 +73,6 @@ public class Browser extends BaseElement {
 	 */
 	public void quit() {
 		uiwindow.quit();
-
 	}
 
 	/**
@@ -68,15 +80,11 @@ public class Browser extends BaseElement {
 	 */
 	public void refresh() {
 		uiwindow.refresh();
-		TcSql.updateDone("done","刷新页面");
+		TcSql.updateDone("done", "刷新页面");
 	}
 
-	/**
-	 * 添加cookie
-	 */
-
 	/***
-	 * 查找当前页面指定文本
+	 * 查找当前页面指定文本是否存在，存在表示断言通过
 	 * 
 	 * @param text
 	 */
@@ -94,11 +102,11 @@ public class Browser extends BaseElement {
 	public boolean checkIfExists(String locator) {
 		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
 		if (ele == null) {
-			Assertion.info("没有找到元素 locator=" + locator);
+			assertion.info("没有找到元素 locator=" + locator);
 			TcSql.updateDone("done", "没有找到元素 locator=" + locator);
 			return false;
 		} else {
-			Assertion.info("找到元素 locator=" + locator);
+			assertion.info("找到元素 locator=" + locator);
 			TcSql.updateDone("done", "找到元素 locator=" + locator);
 			return true;
 		}
@@ -113,7 +121,7 @@ public class Browser extends BaseElement {
 	 */
 	public void switchWindowInt(int number) {
 		switchwindow.switchWindow(number);
-		TcSql.updateDone("done", "切换tab窗口至" + number);
+		TcSql.updateDone("done", "切换tab窗口至第" + number + "个");
 	}
 
 	/**
@@ -126,7 +134,7 @@ public class Browser extends BaseElement {
 	}
 
 	public void switchWindowString(String windowHandle) {
-		switchwindow.switchWindow(windowHandle);
+		switchwindow.switchWindowByString(windowHandle);
 		TcSql.updateDone("done", "切换tab窗口至" + windowHandle);
 	}
 
@@ -135,6 +143,7 @@ public class Browser extends BaseElement {
 	 */
 	public void close() {
 		uiwindow.close();
+		TcSql.updateDone("done", "关闭浏览器窗口");
 	}
 
 	/**
@@ -150,6 +159,7 @@ public class Browser extends BaseElement {
 	 */
 	public void goForward() {
 		uiwindow.forward();
+		TcSql.updateDone("done", "浏览器向前");
 	}
 
 	/**
@@ -162,96 +172,18 @@ public class Browser extends BaseElement {
 		clicker.clickByLocator(locator);
 	}
 
-	// /***
-	// * 点击给定的目标element控件元素
-	// *
-	// * @param element
-	// */
-	// public void click(WebElement element) {
-	// element.click();
-	// }
-
-	/***
-	 * 检查给定的目标元素是否显示在页面上，返回真点击元素
-	 */
-	public void checkClick(String locator) {
-		if (checkIfExists(locator)) {
-
-		}
-	}
-
 	/**
 	 * 鼠标左键单击一个页面元素
 	 * 
 	 * @param text
 	 *            文本内容
 	 */
-	// public void clickOnText(String text) {
-	// Clicker.clickOnText(text);
-	// }
-	//
-	//
-	// /**
-	// * 鼠标左键单击一个按钮
-	// * @param buttonName 按钮名称
-	// */
-	// public void clickOnButton(String buttonName) {
-	// Clicker.clickOnButton(buttonName);
-	// }
-	//
-	//
-	// /***
-	// * 点击目标元素
-	// * @param locator
-	// * @param timeout
-	// */
-	// public void click(String locator, int timeout) {
-	// Clicker.click(locator, timeout);
-	// }
-	//
-	// /**
-	// * 获取定位元素的标签名称
-	// *
-	// * @param locator 元素定位器
-	// * @return 返回元素标签名
-	// */
-	// public String getTagName(String locator) {
-	// return AttrFunc.getTagName(locator, timeout);
-	// }
-	//
-	//
-	// /**
-	// * 获取定位元素的标签名称
-	// *
-	// * @param locator 元素定位器
-	// * @param timeout 超时时间,单位秒.
-	// * @return 返回元素标签名
-	// */
-	// public String getTagName(String locator, int timeout) {
-	// return AttrFunc.getTagName(locator, timeout);
-	// }
-	//
-	//
-	// /***
-	// * 直接输入文本值(不通过element)
-	// * @param value
-	// */
-	// public void type(String value){
-	// driver.switchTo().alert().sendKeys(value + Keys.ENTER);
-	// }
-	//
-	//
-	// /**
-	// * 对一个元素模拟键盘输入,清掉元素原来的值,填入新的值.如在规定时间内没有找到定位器指定的元素则停止当前用例.
-	// * @param locator 元素定位器
-	// * @param value 需要对元素输入的值
-	// */
-	// public void type(String locator, String value) {
-	// ElementOperation.type(locator, value,timeout);
-	// }
-	//
+	public void clickOnText(String text) {
+		clicker.clickOnText(text);
+	}
+
 	/**
-	 * 不对原有的字符进行清除，只输入值
+	 * 对原有的字符进行清除，只输入值
 	 * 
 	 * @param locator
 	 * @param value
@@ -259,27 +191,16 @@ public class Browser extends BaseElement {
 	public void sendKeys(String locator, String value) {
 		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
 		if (null == ele) {
-			Assertion.error("没有找到元素locator=" + locator);
+			assertion.error("没有找到元素locator=" + locator);
 			TcSql.updateDone("fail", "没有找到元素locator=" + locator);
 		} else {
+			ele.clear();
 			ele.sendKeys(value);
-			Assertion.info("输入" + value + "至localtor=" + locator + "成功");
+			assertion.info("输入" + value + "至localtor=" + locator + "成功");
 			TcSql.updateDone("done", "输入" + value + "至localtor=" + locator + "成功");
 		}
 	}
 
-	//
-	// /**
-	// * 对一个元素模拟键盘输入,清掉元素原来的值,填入新的值.如在规定时间内没有找到定位器指定的元素则停止当前用例.
-	// * @param locator 元素定位器
-	// * @param value 需要对元素输入的值
-	// * @param timeout 超时设置,单位秒.
-	// */
-	// public void type(String locator, String value,int timeout) {
-	// ElementOperation.type(locator, value, timeout);
-	// }
-	//
-	//
 	/**
 	 * 获取定位元素的页面可见值,包括子元素,会自动去除前后留白.超时时间根据配置文件中的 #超时时间 单位是秒 timeout 来定义
 	 * 
@@ -290,192 +211,214 @@ public class Browser extends BaseElement {
 	public String getText(String locator) {
 		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
 		String text = we.getText().trim();
-		TcSql.updateDone("done", "获取元素文本"+text);
+		// TcSql.updateDone("done", "获取元素文本"+text);
 		return text;
 	}
 
-	// /**
-	// * 获取定位元素的页面可见值,包括子元素,会自动去除前后留白.超时时间根据配置文件中的 #超时时间 单位是秒 timeout 来定义
-	// * @param element 元素定位器
-	// * @return 返回页面元素的值
-	// */
-	// public String getText(WebElement element) {
-	// return AttrFunc.getText(element,timeout);
-	// }
-	//
-	//
-	// /**
-	// * 获取定位元素的页面可见值,包括子元素,会自动去除前后留白.
-	// * @param locator 元素定位器
-	// * @param timeout 超时设置,单位秒.可自行设置超时时间
-	// * @return 定位元素的可见文本, 包含子元素.
-	// */
-	// public String getText(String locator, int timeout) {
-	// return AttrFunc.getText(locator, timeout);
-	// }
-	//
-	//
-	// /**
-	// * 获取一个给定元素的属性值 超时时间根据配置文件中的 #超时时间 单位是秒 timeout 来定义
-	// * @param locator 元素定位器
-	// * @param attribute 元素属性
-	// * @return 返回该元素属性内容
-	// */
-	// public String getAttribute(String locator, String attribute) {
-	// return AttrFunc.getAttribute(locator, attribute,timeout);
-	// }
-	//
-	//
-	//
-	// /**
-	// * 获取一个给定元素的属性值
-	// * @param locator 元素定位器
-	// * @param attribute 要获取的属性
-	// * @param timeout 超时设置,单位秒. 可自行设置超时时间
-	// * @return 返回元素属性的字符串
-	// */
-	// public String getAttribute(WebElement element,String attribute){
-	// return AttrFunc.getAttribute(element, attribute);
-	// }
-	//
-	// /**
-	// * 获取给定元素的css属性值
-	// * @param locator 元素定位器
-	// * @param propertyName css属性
-	// * @return 返回css属性值
-	// */
-	// public String getCssValue(String locator,String propertyName){
-	// return AttrFunc.getCssValue(locator, propertyName, timeout);
-	// }
-	//
-	// /**
-	// * 获取给定元素的css和颜色有关的属性
-	// * @param locator 元素定位器
-	// * @param propertyName css属性
-	// * @return 返回css属性值
-	// */
-	// public String getCssColor(String locator,String propertyName){
-	// return AttrFunc.getCssColor(locator, propertyName, timeout);
-	// }
-	// /**
-	// * 选择下拉列表,有些元素看着像下拉列表其实是js控制的div,使用前最好先看一下元素的标签是否为select.
-	// * @param selectLocator 页面元素定位器
-	// * @param optionLocator 指定要选择的元素
-	// */
-	// public void select(String selectLocator, String optionLocator) {
-	// Selector.selectByVisibleText(selectLocator, optionLocator);
-	// }
-	//
-	// /**
-	// * 选择下拉列表,传入select的是int
-	// * @param selectLocator 页面元素定位器
-	// * @param index 指定要选择的元素
-	// */
-	// public void select(String selectLocator, int index) {
-	// Selector.selectByIndex(selectLocator, index);
-	// }
-	//
-	//
-	// /**
-	// * 选择下拉列表,传入select的是int,返回选择的option值 后面会废弃，新改进了一个 public String
-	// * selectReturn(String selectLocator) 这个不在需要传入int，自动随机选择并返回
-	// * @param selectLocator 页面元素定位器
-	// * @param option 指定要选择的元素
-	// */
-	// public String selectReturn(String selectLocator, int option) {
-	// return Selector.selectReturn(selectLocator, option);
-	// }
-	//
-	//
-	// /**
-	// * 选择下拉列表,只需传入select的locator,会在所有option中随机选一个 并且返回选择的option值
-	// * @param selectLocator 页面元素定位器
-	// */
-	// public String selectReturn(String selectLocator) {
-	// return Selector.selectReturn(selectLocator);
-	// }
-	//
 	/**
-	 * 通过对象的equals方式判断两个变量内容是否相等
+	 * 选择下拉列表,有些元素看着像下拉列表其实是js控制的div,使用前最好先看一下元素的标签是否为select.
 	 * 
-	 * @param expected
-	 *            预期的值
-	 * @param actual
-	 *            实际的值
-	 * 
+	 * @param selectLocator
+	 *            页面元素定位器
+	 * @param optionLocator
+	 *            指定要选择的元素
 	 */
-	public void assertEqualString(String locator, String expected) {
-		String actual = findElement.searchUntilPresent(locator, elementTimeout).getText().trim();
-		Assertion.assertEquals(actual, expected);
+	public void selectByVisibleText(String selectLocator, String optionLocator) {
+		selector.selectByVisibleText(selectLocator, optionLocator);
 	}
 
 	/**
-	 * /** 通过对象的equals方式判断两个变量内容是否相等,通过attr确定获取元素的哪个属性值,value,text
+	 * 选择下拉列表,传入select的是index
+	 * 
+	 * @param selectLocator
+	 *            页面元素定位器
+	 * @param index
+	 *            指定要选择的元素
+	 */
+	public void selectByIndex(String selectLocator, int index) {
+		selector.selectByIndex(selectLocator, index);
+	}
+
+	/**
+	 * 选择下拉列表，传入select的是value
+	 * 
+	 * @param selectLocator
+	 * @param value
+	 */
+	public void selectByValue(String selectLocator, String value) {
+		selector.selectByValue(selectLocator, value);
+	}
+
+	/***
+	 * 当目标定位器对应多个控件时取最后一个
 	 * 
 	 * @param locator
-	 * @param expected
-	 * @param attr
 	 * @return
 	 */
-	public void assertAttrEquals(String locator, String expected, String attr) {
-		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
-		String actual = "";
-		if ("text".equals(attr)) {
-			actual = we.getText().trim();
-		} else if ("value".equals(attr)) {
-			actual = we.getAttribute("value").trim();
+	public WebElement getLastElementInList(String locator) {
+		List<WebElement> elementList = findElement.searchsUntilPresent(locator, elementTimeout);
+		int listLength = elementList.size();
+		return elementList.get(listLength - 1);
+	}
+
+	/**
+	 * 获取当前页面活动元素的值，focus的元素
+	 */
+	public String getActiveElementText() {
+		return rw.switchTo().activeElement().getText().trim();
+	}
+
+	/**
+	 * 切换到需要操作的iframe
+	 * 
+	 * @param i
+	 *            当前需要操作的iframe下标 默认从0开始
+	 */
+	public void switchToIframeByIndex(int i) {
+		try {
+			switchwindow.switchWindow(i);
+			logger.info("跳转到frame"+i+"成功");
+		} catch (WebDriverException e) {
+			logger.info("跳转到frame"+i+"失败");
 		}
-		Assertion.assertEquals(actual, expected);
+	}
+	
+	 /**
+	 * 切换到需要操作的iframe
+	 * @param locator frameElement元素定位器
+	 */
+	 public void switchToIframeByLocator(String locator) {
+		 switchwindow.switchToIframeByEle(locator);
+	 }
+	
+	
+	
+	
+	
+	
+	 /**
+	 * 对跳出的窗口输入文字
+	 * @param value
+	 */
+	 public void typeVauleForAlert(String value){
+		 alert.sendkeys(value);
+	 }
+	
+	 /**
+	 * 确认弹出框
+	 */
+	 public void confirmAlert() {
+	 	alert.accept();
+	 }
+	
+	
+	 /***
+	 * 取消弹出框
+	 */
+	 public void dismissAlert(){
+		alert.dismiss();
+	 }
+	
+	
+	 /***
+	 * 取弹出框文本值
+	 * @return
+	 */
+	 public String getAlertText(){
+	 return alert.getText();
+	 }
+	
+	
+	
+	
+	 
+	
+	
+	 
+	
+	 /**
+	 * 拖拉一个元素到另一个元素 默认超时时间为config文件中配置的timeout时间 单位秒
+	 * @param sourceLoc 源元素定位器
+	 * @param targetLoc 目标元素定位器
+	 */
+	 public void dragAndDrop(String sourceLoc, String targetLoc) {
+		 uiwindow.dragAndDrop(sourceLoc, targetLoc, elementTimeout);
+	 }
+	
+	
+	
+	
+	
+	
+	 /**
+	 * 执行js
+	 * @param js
+	 */
+	 public void runScript(String js) {
+		 uiwindow.runScript(js);
+	 }
+	
+
+	/**
+	 * 根据指定的name获取cookie的value
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public String getCookieValueByName(String name) {
+		return uiwindow.getCookieValue(name);
 	}
 
 	/**
-	 * 通过对象的equals方式判断两个整型变量内容是否相等
+	 * 设置cookie
 	 * 
-	 * @param expected
-	 *            预期的值
-	 * @param actual
-	 *            实际的值
+	 * @param key
+	 * @param value
 	 */
-	public void assertEqualsInt(int expected, int actual) {
-		Assertion.assertEquals(expected, actual);
+	public void setCookie(String key, String value) {
+		uiwindow.setCookie(key, value);
+		TcSql.updateDone("done", "设置cookie key=" + key + ";value=" + value);
 	}
 
-	// /***
-	// * 断言指定的目标控件存在
-	// * @param locator 目标控件ID
-	// */
-	// public void assertViewExist(String locator) {
-	// Assertion.assertViewExist(locator);
-	// }
-	//
-	// /**
-	// * 断言condition是否为True
-	// * @param condition 需要被断言的变量
-	// */
-	// public void assertTrue(Boolean condition) {
-	// Assertion.assertTrue(condition);
-	// }
-	//
-	//
-	// /**
-	// * 断言condition是否为False，不为false则中断执行
-	// * @param condition 需要被断言的变量
-	// */
-	// public void assertFalse(Boolean condition) {
-	// Assertion.assertFalse(condition);
-	// }
-	//
-	/**
-	 * 断言expected是否被actual包含 比较actual与expected是否相等 不相等则report 测试点FAIL
-	 * 
-	 * @param actual
-	 *            实际值
-	 * @param expected
-	 *            期望值
+	/***
+	 * 向下滚动屏幕至底
 	 */
-	public void assertContain(String locator, String expected) {
-		String actual = getText(locator);
-		Assertion.assertContains(actual, expected);
+	public void scroolDown() {
+		uiwindow.srollDown();
+	}
+
+	/***
+	 * 滚动至屏幕中央
+	 */
+	public void scroolDownHalf() {
+		uiwindow.scrollDownHalf();
+	}
+
+	/***
+	 * 向上滚动一屏屏幕
+	 */
+	public void scroolUp() {
+		uiwindow.scrollUp();
+	}
+
+	/***
+	 * 移动鼠标至元素
+	 * 
+	 * @param locator
+	 */
+	public void moveToElement(String locator) {
+		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
+		action.moveToElement(ele);
+		TcSql.updateDone("done", "移动鼠标至" + locator);
+	}
+
+	/**
+	 * 移动鼠标至元素并点击
+	 */
+	public void moveToElementClick(String locator) {
+		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
+		action.moveToElement(ele).click().perform();
+		TcSql.updateDone("done", "移动鼠标至" + locator + "并点击");
 	}
 
 	/**
@@ -489,424 +432,145 @@ public class Browser extends BaseElement {
 		return findElement.searchsUntilPresent(locator, elementTimeout).size();
 	}
 
-	public boolean assertNotEquals(String actual, String expected) {
-		if (actual.equals(expected)) {
-			logger.error(actual + expected + "相等");
-			Assert.fail();
-		}
-		return true;
+	/**
+	 * 通过对象的equals方式判断两个变量内容是否相等
+	 * 
+	 * @param expected
+	 *            预期的值
+	 * @param locator
+	 *            实际值的定位器
+	 * 
+	 */
+	public void assertEqualString(String locator, String expected) {
+		String actual = findElement.searchUntilPresent(locator, elementTimeout).getText().trim();
+		assertion.assertEquals(actual, expected);
 	}
 
-	//
-	//
-	// /***
-	// * 返回符合条件的所有控件
-	// * @param locator
-	// * @return
-	// */
-	// public List<WebElement> getElements(String locator){
-	// return AttrFunc.getElements(locator);
-	// }
-	//
-	//
-	// /***
-	// * 当目标定位器对应多个控件时取最后一个
-	// * @param locator
-	// * @return
-	// */
-	// public WebElement getLastElementInList(String locator){
-	// List<WebElement> elementList = getElements(locator);
-	// int listLength = elementList.size();
-	// return elementList.get(listLength-1);
-	// }
-	//
-	//
-	// /**
-	// * 获取当前页面url
-	// * @return 返回当前的url
-	// */
-	// public String getCurrentUrl() {
-	// return browser.getCurrentUrl();
-	// }
-	//
-	// public void dele(){
-	// System.setProperty("webdriver.chrome.driver","tools/chromedriver.exe");
-	// DesiredCapabilities caps = DesiredCapabilities.chrome();
-	// caps.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION,
-	// true);
-	//
-	// }
-	// /**
-	// * 获取页面的所有html
-	// * @return 返回当前页面的html源码
-	// */
-	// public String getPageSource() {
-	// return browser.getPageSource();
-	// }
-	//
-	// /**
-	// * 操作当前页面活动元素
-	// * @param value 传递给当前activeElement元素的值
-	// */
-	// public void activeElementSendkeys(String value) {
-	// browser.activeElementSendkeys(value);
-	// }
-	//
-	//
-	// /**
-	// * 获取当前页面活动元素的值
-	// */
-	// public String getActiveElementText() {
-	// return browser.getActiveElementText();
-	// }
-	//
-	// /**
-	// * 切换到需要操作的iframe
-	// * @param i 当前需要操作的iframe下标 默认从0开始
-	// */
-	// public void switchToIframe(int i) {
-	// browser.switchToIFrame(i);
-	// }
-	//
-	// /**
-	// * 切换到需要操作的iframe
-	// * @param locator frameElement元素定位器
-	// */
-	// public void switchToIframe(String locator) {
-	// browser.switchToIframe(locator,timeout);
-	// }
-	//
-	//
-	// /**
-	// * 切换到需要操作的iframe
-	// * @param locator frameElement元素定位器
-	// * @param time 定位元素的设定时间值
-	// */
-	// public void switchToIframe(String locator,int timeout) {
-	// browser.switchToIframe(locator, timeout);
-	// }
-	//
-	// /**
-	// * 关闭当前case所有的window
-	// */
-	// public void closeAllwindow() {
-	// browser.closeAllwindow();
-	// }
-	//
-	// /**
-	// * 获取当前windowshandle个数
-	// * @return 返回windowshandle个数
-	// */
-	// public int getWindowHandles() {
-	// Log.writeLogINFO("go into driver.getWindowHandles().size()");
-	// return driver.getWindowHandles().size();
-	// }
-	//
-	//
-	//
-	// /**
-	// * 等待页面操作完成，跳出当前frame
-	// */
-	// public void exitFrame() {
-	// browser.exitFrame();
-	// }
-	//
-	// /**
-	// * 对跳出的窗口输入文字
-	// * @param value
-	// */
-	// public void typeVauleForAlert(String value){
-	// Alert.typeVauleForAlert(value);
-	// }
-	//
-	// /**
-	// * 确认弹出框
-	// */
-	// public void confirmAlert() {
-	// Alert.confirmAlert();
-	// }
-	//
-	//
-	// /***
-	// * 取消弹出框
-	// */
-	// public void dismissAlert(){
-	// Alert.dismissAlert();
-	// }
-	//
-	//
-	// /***
-	// * 取弹出框文本值
-	// * @return
-	// */
-	// public String getAlertText(){
-	// return Alert.getAlertText();
-	// }
-	//
-	//
-	//
-	//
-	// /**
-	// * 上传附件，包括图片或者其他附件.
-	// * @param locator 元素定位器
-	// * @param filepath 需要上传的文件全路径名 例：d:\\report\\2012-3-15 16-07-21.jpg
-	// */
-	// public void uploadFile(String locator, String filepath) {
-	// browser.uploadFile(locator, filepath);
-	// }
-	//
-	//
-	// /**
-	// * 上传附件，包括图片或者其他附件.
-	// * @param locator 元素定位器
-	// * @param filepath 需要上传的文件全路径名 例：d:\\report\\2012-3-15 16-07-21.jpg
-	// * @param timeout 超时设置,单位秒.
-	// */
-	// public void uploadFile(String locator, String filepath, int timeout) {
-	// browser.uploadFile(locator, filepath, timeout);
-	// }
-	//
-	//
-	//
-	// /**
-	// * 窗口最大化
-	// */
-	// public void winMaxSize() {
-	// browser.maxSize();
-	// }
-	//
-	// /**
-	// * 窗口最小化
-	// */
-	// public void winMinSize() {
-	// browser.minSize();
-	// }
-	//
-	// /**
-	// * 判断当前选项是否被选中(下拉列表,单选或多选)
-	// * @param locator 定位器
-	// * @return 返回当前下拉列表元素是否被选中
-	// */
-	// public boolean isSelect(String locator) {
-	// return Selector.isSelect(locator);
-	// }
-	//
-	//
-	// /**
-	// * 拖拉一个元素到另一个元素 默认超时时间为config文件中配置的timeout时间 单位秒
-	// * @param sourceLoc 源元素定位器
-	// * @param targetLoc 目标元素定位器
-	// */
-	// public void dragAndDrop(String sourceLoc, String targetLoc) {
-	// browser.dragAndDrop(sourceLoc, targetLoc,timeout);
-	// }
-	//
-	//
-	// /**
-	// * 拖拉一个元素到另一个元素
-	// * @param sourceLoc 源元素定位器
-	// * @param targetLoc 目标元素定位器
-	// * @param timeout 超时设置,单位秒.
-	// */
-	// public void dragAndDrop(String sourceLoc, String targetLoc, int timeout)
-	// {
-	// browser.dragAndDrop(sourceLoc, targetLoc, timeout);
-	// }
-	//
-	//
-	//
-	// /**
-	// * 鼠标移动到某个元素上 默认超时时间为config文件中配置的timeout时间 单位秒
-	// * @param locator 元素定位器
-	// */
-	// public void moveToElement(String locator) {
-	// browser.moveToElement(locator,timeout);
-	// }
-	//
-	//
-	// /**
-	// * 鼠标移动到某个元素上
-	// * @param locator 元素定位器
-	// * @param timeout 超时设置,单位秒.
-	// */
-	// public void moveToElement(String locator, int timeout) {
-	// browser.moveToElement(locator, timeout);
-	// }
-	//
-	//
-	// /**
-	// * @param locator
-	// */
-	// public void moveToElementClick(String locator) {
-	// browser.moveToElementClick(locator);
-	// }
-	//
-	// /**
-	// * 移动鼠标到指定的元素后通过元素坐标+x和+y的偏移量点击页面区域
-	// *
-	// * @param locator
-	// * @param timeout
-	// */
-	// public void moveClick(String locator, int timeout, int xOffset, int
-	// yOffset) {
-	// browser.moveClick(locator, timeout, xOffset, yOffset);
-	// }
-	//
-	// /**
-	// * 删除浏览器当前所有Cookie
-	// */
-	// public void deleteAllCookies() {
-	// browser.deleteAllCookies();
-	// }
-	//
-	// /**
-	// * 添加cookie
-	// */
-	// public void addCookie(String key,String value){
-	// browser.setCookie(key, value);
-	// }
-	//
-	// /**
-	// * 获取一个指定cookie key的值
-	// * @param key
-	// * @return
-	// */
-	// public String getCookie(String key) {
-	// return browser.getCookie(key);
-	// }
-	//
-	// /**
-	// * 获取当前页面的cookie 并且输出到外部文件
-	// */
-	// public String getCookies() {
-	// return browser.getCookies();
-	// }
-	//
-	// /**
-	// * 获取当前web页面的title
-	// *
-	// * @return 返回当前页面title
-	// */
-	// public String getTitle() {
-	// return browser.getTitle();
-	// }
-	//
-	// /**
-	// * 获取当前元素对象
-	// *
-	// * @param locator
-	// * @param logInfo
-	// * @param timeout
-	// * @return
-	// */
-	// public WebElement findElement(String locator, String logInfo, int
-	// timeout) {
-	// return ElementFinder.findElement(locator, timeout);
-	// }
-	//
-	// /**
-	// * 执行js
-	// * @param js
-	// */
-	// public void runScript(String js) {
-	// browser.runScript(js);
-	// }
-	//
-	// /**
-	// * 截屏功能 返回图片名称
-	// */
-	// public String printScreen() {
-	// return ScreenshotFunc.printScreen();
-	// }
-	//
-	// /**
-	// * 刷新页面 keyEvent实现
-	// */
-	// public void refreshPage() {
-	// browser.refreshPageForKeyEvent();
-	// }
-	//
-	//
-	//
-	// /**
-	// * 根据指定的name获取cookie的value
-	// * @param name
-	// * @return
-	// */
-	// public String getCookieValueByName(String name){
-	// return browser.getCookieValue(name);
-	// }
-	//
-	// public void setCookie(String key,String value){
-	// browser.setCookie(key, value);
-	// }
-	//
-	// /***
-	// * 浏览器driver对象置空
-	// */
-	// public void setDriverNull(){
-	// BrowserFactory.setDriverNull();
-	// }
-	//
-	//
-	// /***
-	// * 清空指定文本控件内的内容
-	// */
-	// public void clear(String locator){
-	// ElementOperation.clear(locator);
-	// }
-	//
-	//
-	//
-	// /***
-	// * 判断目标元素控件是否显示
-	// * @param locator
-	// */
-	// public boolean isDisplayed(String locator){
-	// return AttrFunc.isDisplayed(locator);
-	// }
-	//
-	//
-	// /***
-	// * 判断目标元素控件可操作状态
-	// * @param locator
-	// * @return
-	// */
-	// public boolean isEnabled(String locator){
-	// return AttrFunc.isEnabled(locator);
-	// }
-	//
-	//
-	//
-	// /***
-	// * 向下滚动一屏屏幕
-	// */
-	// public void scroolDown(){
-	// browser.runScript("window.scrollTo(0,document.body.scrollHeight);");
-	// }
-	//
-	//
-	// /***
-	// * 向下滚动一屏屏幕
-	// */
-	// public void scroolDownHalf(){
-	// browser.runScript("window.scrollTo(0,document.body.scrollHeight/2);");
-	// }
-	//
-	//
-	// /***
-	// * 向上滚动一屏屏幕
-	// */
-	// public void scroolUp(){
-	// .runScript("window.scrollTo(document.body.scrollHeight,0);");
-	// }
-	/***
-	 * 移动鼠标至元素
+	/**
+	 * 通过对象的equals方式判断两个整型变量内容是否相等
+	 * 
+	 * @param expected
+	 *            预期的值
+	 * @param actual
+	 *            实际值所在的定位器
+	 */
+	public void assertEqualsInt(int expected, String actual) {
+		String actualText = findElement.searchUntilPresent(actual, elementTimeout).getText().trim();
+		assertion.assertEquals(expected, Integer.parseInt(actualText));
+	}
+
+	/**
+	 * /** 通过对象的equals方式判断两个变量内容是否相等,通过attr确定获取元素的哪个属性值,value,text
 	 * 
 	 * @param locator
+	 *            给定元素的定位器
+	 * @param expected
+	 *            期望的文本字符串
+	 * @param attr
+	 *            期望的属性 value,text
+	 * @return
 	 */
-	public void moveToElement(String locator) {
-		WebElement ele = findElement.searchUntilPresent(locator, elementTimeout);
-		action.moveToElement(ele);
+	public void assertAttrEquals(String locator, String expected, String attr) {
+		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
+		String actual = "";
+		if ("text".equals(attr)) {
+			actual = we.getText().trim();
+		} else if ("value".equals(attr)) {
+			actual = we.getAttribute("value").trim();
+		}
+		assertion.assertEquals(actual, expected);
 	}
+
+	/***
+	 * 断言指定的目标控件存在
+	 * 
+	 * @param locator
+	 *            目标控件ID
+	 */
+	public void assertViewExist(String locator) {
+		checkIfExists(locator);
+	}
+
+	/**
+	 * 断言condition是否为True
+	 * 
+	 * @param condition
+	 *            需要被断言的变量
+	 */
+	public void assertTrue(Boolean condition) {
+		assertion.assertTrue(condition);
+	}
+
+	/**
+	 * 断言condition是否为False，不为false则中断执行
+	 * 
+	 * @param condition
+	 *            需要被断言的变量
+	 */
+	public void assertFalse(Boolean condition) {
+		assertion.assertFalse(condition);
+	}
+
+	/**
+	 * 断言locator元素的文本值是否包含expected
+	 * 
+	 * @param locator
+	 * @param expected
+	 */
+	public void assertContain(String locator, String expected) {
+		String actual = getText(locator);
+		assertion.assertContains(actual, expected);
+	}
+
+	/**
+	 * 断言给定定位器元素的值不等于给定预期值
+	 * 
+	 * @param locator
+	 * @param expected
+	 */
+	public void assertNotEquals(String locator, String expected) {
+		String actual = getText(locator);
+		if (actual.equals(expected)) {
+			logger.error(actual + expected + "相等");
+			assertion.error(actual + expected + "相等");
+		} else {
+			assertion.pass(actual + expected + "不相等");
+		}
+	}
+
+	/**
+	 * 断言给定定位器的css的propertyName指定的属性和预期expected相等
+	 * 
+	 * @param locator
+	 * @param propertyName
+	 * @param expected
+	 */
+	public void assertCssValue(String locator, String propertyName, String expected) {
+		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
+		String cssvalue = we.getCssValue(propertyName);
+		assertion.assertEquals(cssvalue, expected);
+	}
+
+	/**
+	 * 断言给定定位器的css的背景色与给定的expected相等
+	 * 
+	 * @param locator
+	 * @param propertyName
+	 * @param expected
+	 */
+	public void assertCssColor(String locator, String expected) {
+		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
+		String cssvalue = we.getCssValue("background");
+		String cssColor = Color.fromString(cssvalue).asHex();
+		this.assertion.assertEquals(cssColor, expected);
+	}
+	/**
+	 * 返回textXpath定位元素的文本，返回UIxpath定位元素的li个数；两者比较相等
+	 * @param textXpath
+	 * @param ULxpath
+	 */
+	public void assertTextEqualsUIListCount(String textXpath,String ULxpath){
+		ipw.assertTextEqualsUIListCount(textXpath, ULxpath);
+	}
+
 }

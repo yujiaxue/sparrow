@@ -52,8 +52,7 @@ public class JdbcFactory {
 			stmt.setInt(4, caseid);
 			stmt.setInt(5, stepid);
 			stmt.setString(2, log);
-			int row = stmt.executeUpdate();
-			logger.info("db操作更新记录 " + row + "行");
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -72,8 +71,7 @@ public class JdbcFactory {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, status);
 			stmt.setInt(2, taskid);
-			int row = stmt.executeUpdate();
-			logger.info("db操作更新记录 " + row + "行");
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -81,6 +79,50 @@ public class JdbcFactory {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
+	public void updateImg(String sql, String status, int exeid, int caseid, int stepid) {
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, status);
+			stmt.setInt(2, exeid);
+			stmt.setInt(3, caseid);
+			stmt.setInt(4, stepid);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public void updateExcute(String sql,int passnum,int failnum,int taskid,String status,int excuid,int excutetime){
+		try{
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, passnum);
+			stmt.setInt(2, failnum);
+			stmt.setInt(3, excutetime);
+			stmt.setString(4, status);
+			stmt.setInt(5, taskid);
+			stmt.setInt(6, excuid);
+			stmt.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			if(stmt != null){
+				try{
+					stmt.close();
+				}catch(SQLException e){
 					e.printStackTrace();
 				}
 			}

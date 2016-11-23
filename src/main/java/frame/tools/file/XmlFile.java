@@ -29,6 +29,7 @@ public class XmlFile {
 			while ((line = br.readLine()) != null) {
 				sb.append(line);
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally{

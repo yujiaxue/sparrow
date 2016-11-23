@@ -23,8 +23,8 @@ public class TestListener implements ITestListener {
 		endMillions = System.currentTimeMillis();
 		long totalMillions = endMillions - startMillions;
 		int timeCost = (int) (totalMillions / 1000 / 60);
-		logger.info("onFinish----"+timeCost +"----分钟");
-		newThread();
+		//logger.info("onFinish----"+timeCost +"----分钟");
+		//newThread();
 	}
 
 	
@@ -38,7 +38,7 @@ public class TestListener implements ITestListener {
 	public void onTestFailure(ITestResult arg0) {
 		float time = calTestMillison();
 		//logger.info(arg0.getName()+ "失败 time cost is "+ time + "秒钟");
-		log("onTestEnd----"+arg0.getTestClass().getName() + "----"+ arg0.getName()+"----"+arg0.getMethod().getDescription()+"----failed----"+time+"----"+"秒钟");
+		//log("onTestEnd----"+arg0.getTestClass().getName() + "----"+ arg0.getName()+"----"+arg0.getMethod().getDescription()+"----failed----"+time+"----"+"秒钟");
 
 	}
 
@@ -54,14 +54,14 @@ public class TestListener implements ITestListener {
 	public void onTestStart(ITestResult arg0) {
 		Object[] a = arg0.getParameters();
 		testStartMillions = System.currentTimeMillis();
-		logger.info("onTestStart----"+arg0.getTestClass().getName() + "----"+ arg0.getName()+"----"+arg0.getMethod().getDescription()+"----"+a[0]);
+		//logger.info("onTestStart----"+arg0.getTestClass().getName() + "----"+ arg0.getName()+"----"+arg0.getMethod().getDescription()+"----"+a[0]);
 		
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult arg0) {
 		float time = calTestMillison();
-		log("onTestEnd----"+arg0.getTestClass().getName() + "----"+ arg0.getName()+"----"+arg0.getMethod().getDescription()+"----success----"+time+"----"+"秒钟");
+		//log("onTestEnd----"+arg0.getTestClass().getName() + "----"+ arg0.getName()+"----"+arg0.getMethod().getDescription()+"----success----"+time+"----"+"秒钟");
 		//logger.info(arg0.getName()+ "成功 time cost is "+ time + "秒钟");
 		
 	}

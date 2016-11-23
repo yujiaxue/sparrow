@@ -51,7 +51,4 @@ public class LogParse {
 		WriteHtml.writeHtml(t.toString());
 	}
 
-	public static void main(String[] args) {
-		parseLog();
-	}
 }

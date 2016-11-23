@@ -13,8 +13,10 @@ public class Clicker extends BaseElement{
 	Logger logger = LogManager.getLogger(Clicker.class);
 	
 	private WebElement button = null;
+	private FindElement fe;
 	public Clicker(WebDriver rw) {
 		super(rw);
+		fe = new FindElement(rw);
 	}
 
 	public boolean clickable(String xpath){
@@ -38,7 +40,13 @@ public class Clicker extends BaseElement{
 			TcSql.updateDone("fail", "点击元素 locator="+xpath+"发生异常");
 		}
 	}
-	public void clickByText(String text){
-		
+	public void clickOnText(String text){
+		WebElement we = fe.searchUntilPresent("//*[contains(text(),'" + text + "')]", elementTimeout);
+		try{
+		we.click();
+		TcSql.updateDone("done", "点击元素:"+text+":成功");
+		}catch(Exception e){
+			TcSql.updateDone("done", "点击元素:"+text+":失败，异常:"+e.getMessage());
+		}
 	}
 }
