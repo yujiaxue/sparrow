@@ -4,22 +4,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.framework.image.ScreenShot;
 import org.framework.jdbc.TcSql;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import frame.ui.element.BaseElement;
 
 public class Assertion extends BaseElement {
-	ScreenShot ss;
-	public Assertion(WebDriver rw) {
-		super(rw);
-		ss = new ScreenShot(rw);
-	}
 
 	public static final Logger logger = LogManager.getLogger(Assertion.class);
-	public static int exeid = Integer.parseInt(System.getProperty("executeid"));
-	public static int caseid = Integer.parseInt(System.getProperty("caseid"));
-	public static int stepid = Integer.parseInt(System.getProperty("stepid"));
+//	public static int exeid = Integer.parseInt(System.getProperty("executeid"));
+//	public static int caseid = Integer.parseInt(System.getProperty("caseid"));
+//	public static int stepid = Integer.parseInt(System.getProperty("stepid"));
 
 	public void info(String msg) {
 		logger.info(msg);

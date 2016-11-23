@@ -17,6 +17,7 @@ import frame.ui.element.Alert;
 import frame.ui.element.Attr;
 import frame.ui.element.BaseElement;
 import frame.ui.element.Clicker;
+import frame.ui.element.CookieOperation;
 import frame.ui.element.FindElement;
 import frame.ui.element.Selector;
 import frame.ui.element.SwitchWindow;
@@ -33,27 +34,22 @@ import frame.ui.element.UIWindow;
 public class Browser extends BaseElement {
 
 	private static final Logger logger = LogManager.getLogger(Browser.class);
-	public UIWindow uiwindow;
-	public SwitchWindow switchwindow;
-	public Clicker clicker;
-	public FindElement findElement;
-	public Attr attr;
-	public IwjwPageWrapper ipw;
-	public Assertion assertion;
-	public Selector selector;
-	public Alert alert;
+	
+	public Browser(){
+		
+	}
 	public Browser(WebDriver rw) {
 		super(rw);
-		super.setElementTimeout(Integer.parseInt(config.get("elementTimeout")));
-		this.uiwindow = new UIWindow(rw);
-		this.switchwindow = new SwitchWindow(rw);
-		this.clicker = new Clicker(rw);
-		this.findElement = new FindElement(rw);
-		this.attr = new Attr(rw);
-		this.ipw = new IwjwPageWrapper(rw);
-		this.assertion = new Assertion(rw);
-		this.selector = new Selector(rw);
-		this.alert = new Alert(rw);
+//		this.assertion = new Assertion();
+//		this.findElement = new FindElement();
+//		this.co = new CookieOperation();
+//		this.uiwindow = new UIWindow();
+//		this.switchwindow = new SwitchWindow();
+//		this.clicker = new Clicker();
+//		this.attr = new Attr();
+//		this.selector = new Selector();
+//		this.alert = new Alert();
+//		this.ipw = new IwjwPageWrapper();
 	}
 
 	/**

@@ -1,14 +1,8 @@
 package frame.ui.element;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Attr extends BaseElement{
-	FindElement fe;
-	public Attr(WebDriver rw) {
-		super(rw);
-		fe = new FindElement(rw);
-	}
 
 	public int getElementCount(String locator){
 		return 0;
@@ -22,7 +16,7 @@ public class Attr extends BaseElement{
 	 * @return 返回页面元素的值
 	 */
 	public String getText(String locator) {
-		WebElement we = fe.searchUntilPresent(locator, elementTimeout);
+		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
 		String text = we.getText().trim();
 		//TcSql.updateDone("done", "获取元素文本"+text);
 		return text;

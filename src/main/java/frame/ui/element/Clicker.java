@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.framework.jdbc.TcSql;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,11 +12,6 @@ public class Clicker extends BaseElement{
 	Logger logger = LogManager.getLogger(Clicker.class);
 	
 	private WebElement button = null;
-	private FindElement fe;
-	public Clicker(WebDriver rw) {
-		super(rw);
-		fe = new FindElement(rw);
-	}
 
 	public boolean clickable(String xpath){
 		WebDriverWait wd = new WebDriverWait(rw,elementTimeout);
@@ -41,7 +35,7 @@ public class Clicker extends BaseElement{
 		}
 	}
 	public void clickOnText(String text){
-		WebElement we = fe.searchUntilPresent("//*[contains(text(),'" + text + "')]", elementTimeout);
+		WebElement we = findElement.searchUntilPresent("//*[contains(text(),'" + text + "')]", elementTimeout);
 		try{
 		we.click();
 		TcSql.updateDone("done", "点击元素:"+text+":成功");

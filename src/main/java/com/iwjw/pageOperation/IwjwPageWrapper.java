@@ -1,20 +1,10 @@
 package com.iwjw.pageOperation;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import frame.ui.assertion.Assertion;
 import frame.ui.element.BaseElement;
-import frame.ui.element.FindElement;
 
 public class IwjwPageWrapper extends BaseElement {
-	FindElement fe ;
-	Assertion assertion;
-	public IwjwPageWrapper(WebDriver rw){
-		super(rw);
-		fe = new FindElement(rw);
-		assertion = new Assertion(rw);
-	}
 	
 	public void checkModelCity(String xpath){
 		
@@ -34,7 +24,7 @@ public class IwjwPageWrapper extends BaseElement {
 	 * @param index tips的索引从1开始
 	 */
 	public void searchByTips(String xpath,int index){
-		WebElement we= fe.searchUntilPresent(xpath, this.elementTimeout); 
+		WebElement we= findElement.searchUntilPresent(xpath, this.elementTimeout); 
 		we.click();
 	}
 	
@@ -45,9 +35,9 @@ public class IwjwPageWrapper extends BaseElement {
 	 * @param ULxpath
 	 */
 	public void assertTextEqualsUIListCount(String textXpath,String ULxpath){
-		WebElement we = fe.searchUntilPresent(textXpath, elementTimeout);
+		WebElement we = findElement.searchUntilPresent(textXpath, elementTimeout);
 		String text = we.getText().trim();
-		int count = fe.searchsUntilPresent(ULxpath, elementTimeout).size();
+		int count = findElement.searchsUntilPresent(ULxpath, elementTimeout).size();
 		assertion.assertEquals(Integer.parseInt(text), count);
 	}
 	

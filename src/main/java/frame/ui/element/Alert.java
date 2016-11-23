@@ -5,16 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 
-import frame.ui.assertion.Assertion;
-
 public class Alert extends BaseElement {
+	WebDriver rw;
+
 	Logger logger = LogManager.getLogger();
 
-	protected Assertion assertion;
-	public Alert(WebDriver rw) {
-		super(rw);
-		assertion = new Assertion(rw);
-	}
 
 	public void dismiss() {
 		try {

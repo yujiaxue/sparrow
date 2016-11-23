@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.framework.jdbc.TcSql;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 
 import frame.ui.element.BaseElement;
 
@@ -19,9 +18,6 @@ public class ScreenShot extends BaseElement{
 
 	Logger logger = LogManager.getLogger(ScreenShot.class);
 	
-	public ScreenShot(WebDriver rw) {
-		super(rw);
-	}
 
 	public void screenShotAsFile(){
 		

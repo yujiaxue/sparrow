@@ -3,14 +3,10 @@ package frame.ui.element;
 import java.util.Set;
 
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
 
 
 public class CookieOperation extends BaseElement{
 
-	public CookieOperation(WebDriver rw) {
-		super(rw);
-	}
 	/**
 	 * 设置cookie
 	 * @param key cookie's name

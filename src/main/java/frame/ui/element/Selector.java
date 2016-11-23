@@ -1,25 +1,15 @@
 package frame.ui.element;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import frame.ui.assertion.Assertion;
-
 
 public class Selector  extends BaseElement{
 
-	FindElement fe;
-	Assertion assertion;
-	public Selector(WebDriver rw) {
-		super(rw);
-		fe=new FindElement(rw);
-		assertion = new Assertion(rw);
-	}
 
 	public void selectByVisibleText(String selectLocator, String optionText){
-		WebElement element = fe.searchUntilPresent(selectLocator, elementTimeout);
+		WebElement element = findElement.searchUntilPresent(selectLocator, elementTimeout);
 		try {
 			Select select = new Select(element);
 			select.selectByVisibleText(optionText);
@@ -29,7 +19,7 @@ public class Selector  extends BaseElement{
 		}
 	}
 	public void selectByIndex(String selectLocator,int index){
-		WebElement element = fe.searchUntilPresent(selectLocator, elementTimeout);
+		WebElement element = findElement.searchUntilPresent(selectLocator, elementTimeout);
 		try {
 			Select select = new Select(element);
 			select.selectByIndex(index);
@@ -39,7 +29,7 @@ public class Selector  extends BaseElement{
 		}
 	}
 	public void selectByValue(String selectLocator,String value){
-		WebElement element = fe.searchUntilPresent(selectLocator, elementTimeout);
+		WebElement element = findElement.searchUntilPresent(selectLocator, elementTimeout);
 		try {
 			Select select = new Select(element);
 			select.selectByValue(value);

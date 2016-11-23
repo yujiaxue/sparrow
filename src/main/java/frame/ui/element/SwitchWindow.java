@@ -3,23 +3,15 @@ package frame.ui.element;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.framework.jdbc.TcSql;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-
-import frame.ui.assertion.Assertion;
 
 public class SwitchWindow extends BaseElement {
 
 	Logger logger = LogManager.getLogger(SwitchWindow.class);
-	Assertion assertion;
-	FindElement fe;
 
-	public SwitchWindow(WebDriver rw) {
-		super(rw);
-		assertion = new Assertion(rw);
-		fe = new FindElement(rw);
-	}
+
+	
 
 	/**
 	 * 切换至第 number个 窗口
@@ -60,7 +52,7 @@ public class SwitchWindow extends BaseElement {
 	}
 
 	public void switchToIframeByEle(String locator) {
-		WebElement we = fe.searchUntilPresent(locator, Integer.parseInt(config.get("elementTimeout")));
+		WebElement we = findElement.searchUntilPresent(locator, Integer.parseInt(config.get("elementTimeout")));
 		try {
 			rw.switchTo().frame(we);
 			TcSql.updateDone("done", "切换窗口至" + locator);

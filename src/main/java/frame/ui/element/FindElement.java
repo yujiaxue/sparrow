@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.log4testng.Logger;
 
 import frame.tools.file.Constant;
-import frame.ui.assertion.Assertion;
 
 /**
  * @author zhangfujun
@@ -22,11 +21,8 @@ import frame.ui.assertion.Assertion;
 
 public class FindElement extends BaseElement {
 	Logger logger = Logger.getLogger(FindElement.class);
-	Assertion assertion;
-	public FindElement(WebDriver rw) {
-		super(rw);
-		assertion = new Assertion(rw);
-	}
+
+	
 
 	public WebElement searchByImplicity(String xpath) {
 		WebElement ele = null;

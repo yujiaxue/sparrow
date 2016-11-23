@@ -2,24 +2,13 @@ package frame.ui.element;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-
-import frame.ui.assertion.Assertion;
 
 public class UIWindow extends BaseElement {
 
 	Logger logger = LogManager.getLogger(UIWindow.class);
-	CookieOperation co;
-	FindElement fe ;
-	Assertion assertion;
-	public UIWindow(WebDriver rw) {
-		super(rw);
-		co = new CookieOperation(rw);
-		fe = new FindElement(rw);
-		assertion = new Assertion(rw);
-	}
+
 
 	/**
 	 * 
@@ -111,7 +100,7 @@ public class UIWindow extends BaseElement {
 	}
 	
 	public boolean isSelected(String locator){
-		WebElement we = fe.searchUntilPresent(locator, Integer.parseInt(config.get("elementTimeout")));
+		WebElement we = findElement.searchUntilPresent(locator, Integer.parseInt(config.get("elementTimeout")));
 		boolean selected=false;
 		try{
 			selected = we.isSelected();
@@ -124,8 +113,8 @@ public class UIWindow extends BaseElement {
 	
 	public void dragAndDrop(String sourceLocator,String destLocator,int timeout){
 		try{
-			WebElement source = fe.searchUntilPresent(sourceLocator,timeout);
-			WebElement dest = fe.searchUntilPresent(destLocator, timeout);
+			WebElement source = findElement.searchUntilPresent(sourceLocator,timeout);
+			WebElement dest = findElement.searchUntilPresent(destLocator, timeout);
 			action.dragAndDrop(source, dest).perform();
 		}catch(WebDriverException e){
 			logger.info("draganddrop fail:"+e.getMessage());
