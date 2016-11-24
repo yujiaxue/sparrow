@@ -39,7 +39,7 @@ public class ScreenShot extends BaseElement{
 			FileUtils.copyFile(imgfile, new File(file));
 			TcSql.updateImgFile(file);
 		} catch (IOException e) {
-			logger.info(e.getMessage().toString());
+			logger.info("保存失败文件图片异常:"+e.getMessage().toString());
 		}
 	}
 }

@@ -10,18 +10,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 
-import com.iwjw.pageOperation.IwjwPageWrapper;
-
-import frame.ui.assertion.Assertion;
-import frame.ui.element.Alert;
-import frame.ui.element.Attr;
 import frame.ui.element.BaseElement;
-import frame.ui.element.Clicker;
-import frame.ui.element.CookieOperation;
-import frame.ui.element.FindElement;
-import frame.ui.element.Selector;
-import frame.ui.element.SwitchWindow;
-import frame.ui.element.UIWindow;
 
 /**
  * 浏览器操作类
@@ -558,7 +547,7 @@ public class Browser extends BaseElement {
 		WebElement we = findElement.searchUntilPresent(locator, elementTimeout);
 		String cssvalue = we.getCssValue("background");
 		String cssColor = Color.fromString(cssvalue).asHex();
-		this.assertion.assertEquals(cssColor, expected);
+		assertion.assertEquals(cssColor, expected);
 	}
 	/**
 	 * 返回textXpath定位元素的文本，返回UIxpath定位元素的li个数；两者比较相等

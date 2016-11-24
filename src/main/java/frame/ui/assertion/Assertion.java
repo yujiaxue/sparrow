@@ -2,7 +2,6 @@ package frame.ui.assertion;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.framework.image.ScreenShot;
 import org.framework.jdbc.TcSql;
 import org.testng.Assert;
 
@@ -23,7 +22,7 @@ public class Assertion extends BaseElement {
 	public void error(String msg) throws AssertionError {
 		logger.error(msg);
 		TcSql.updateDone("fail", msg);
-		this.ss.saveScreenShot();
+		ss.saveScreenShot();
 		Assert.fail(msg);
 	}
 

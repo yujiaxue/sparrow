@@ -28,7 +28,7 @@ public class JdbcFactory {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, username, password);
-
+			conn.setAutoCommit(true);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -86,10 +86,10 @@ public class JdbcFactory {
 	}
 	
 	
-	public void updateImg(String sql, String status, int exeid, int caseid, int stepid) {
+	public void updateImg(String sql, String imgfile, int exeid, int caseid, int stepid) {
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, status);
+			stmt.setString(1, imgfile);
 			stmt.setInt(2, exeid);
 			stmt.setInt(3, caseid);
 			stmt.setInt(4, stepid);
@@ -127,5 +127,9 @@ public class JdbcFactory {
 				}
 			}
 		}
+	}
+	public static void main(String[] args) {
+		jf.updateExcute("update excute set successcase=?,failcase=?,excutetime=?,status=? where taskid=? and id=?", 
+				1, 3, 8, "finish", 19, 113);
 	}
 }

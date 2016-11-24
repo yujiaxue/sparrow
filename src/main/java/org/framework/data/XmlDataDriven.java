@@ -75,7 +75,7 @@ public class XmlDataDriven implements Iterator<Object[]> {
 			if (entity != null) {
 				//System.out.println(EntityUtils.toString(entity));
 				// EntityUtils.consume(entity);
-				sb.append(EntityUtils.toString(entity));
+				sb.append(EntityUtils.toString(entity).trim());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -39,8 +39,8 @@ public class TcSql {
 	}
 	public static void updateExcute(int exeid,int passnum,int failnum,int taskid,int excutetime,String status){
 		JdbcFactory jf = JdbcFactory.getConn();
-		jf.updateExcute("update excute set successcase=? ,failcase=?,excutetime=?,status=? where taskid=? and id=?", 
-				 passnum, failnum, excutetime,status,taskid,exeid);
+		jf.updateExcute("update excute set successcase=?,failcase=?,excutetime=?,status=? where taskid=? and id=?", 
+				 passnum, failnum,taskid,status,exeid ,excutetime);
 	}
 
 	public static void updateDone(String status, String log) {
